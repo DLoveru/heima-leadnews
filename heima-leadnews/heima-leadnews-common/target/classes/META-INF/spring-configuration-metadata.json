@@ -1,0 +1,52 @@
+{
+  "groups": [
+    {
+      "name": "mysql.core",
+      "type": "com.heima.common.mysql.core.MysqlCoreConfig",
+      "sourceType": "com.heima.common.mysql.core.MysqlCoreConfig"
+    },
+    {
+      "name": "mysql.core",
+      "type": "com.heima.common.mysql.core.TransactionConfig",
+      "sourceType": "com.heima.common.mysql.core.TransactionConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "mysql.core.aliases-package",
+      "type": "java.lang.String",
+      "sourceType": "com.heima.common.mysql.core.MysqlCoreConfig"
+    },
+    {
+      "name": "mysql.core.jdbc-driver",
+      "type": "java.lang.String",
+      "sourceType": "com.heima.common.mysql.core.MysqlCoreConfig"
+    },
+    {
+      "name": "mysql.core.jdbc-password",
+      "type": "java.lang.String",
+      "sourceType": "com.heima.common.mysql.core.MysqlCoreConfig"
+    },
+    {
+      "name": "mysql.core.jdbc-url",
+      "type": "java.lang.String",
+      "sourceType": "com.heima.common.mysql.core.MysqlCoreConfig"
+    },
+    {
+      "name": "mysql.core.jdbc-user-name",
+      "type": "java.lang.String",
+      "sourceType": "com.heima.common.mysql.core.MysqlCoreConfig"
+    },
+    {
+      "name": "mysql.core.root-mapper",
+      "type": "java.lang.String",
+      "sourceType": "com.heima.common.mysql.core.MysqlCoreConfig"
+    },
+    {
+      "name": "mysql.core.tx-scan-package",
+      "type": "java.lang.String",
+      "sourceType": "com.heima.common.mysql.core.TransactionConfig"
+    }
+  ],
+  "hints": []
+}
