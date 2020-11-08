@@ -54,6 +54,7 @@ public class MysqlCoreConfig {
      */
     public String getRealPassword(){
         String jdbcPassword = this.getJdbcPassword();//123456
+        //密码反转
         String reverse = StringUtils.reverse(jdbcPassword);//654321
         return  reverse;
     }
