@@ -30,7 +30,7 @@ public class BehaviorTest {
         ShowBehaviorDto dto = new ShowBehaviorDto();
         List<ApArticle> list = new ArrayList<>();
         ApArticle apArticle = new ApArticle();
-        apArticle.setId(200);
+        apArticle.setId(10130);
         list.add(apArticle);
         dto.setArticleIds(list);
         appShowBehaviorService.saveShowBehavior(dto);
