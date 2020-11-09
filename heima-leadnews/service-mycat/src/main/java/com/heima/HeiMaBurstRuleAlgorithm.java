@@ -1,3 +1,5 @@
+package com.heima;
+
 import io.mycat.config.model.rule.RuleAlgorithm;
 import io.mycat.route.function.AbstractPartitionAlgorithm;
 
