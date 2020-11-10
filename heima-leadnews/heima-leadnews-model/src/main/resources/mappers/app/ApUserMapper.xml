@@ -22,4 +22,10 @@
         select  <include refid="Base_Column_List" /> from ap_user where id = #{id}
     </select>
 
+    <select id="selectByApPhone" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ap_user where phone = #{phone} limit 1;
+    </select>
+
 </mapper>

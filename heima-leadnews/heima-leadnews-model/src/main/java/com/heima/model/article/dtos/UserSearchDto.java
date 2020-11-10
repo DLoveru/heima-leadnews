@@ -13,7 +13,7 @@ public class UserSearchDto {
     @IdEncrypt
     Integer equipmentId;
     String searchWords;
-    //查询tag: all, article, user, author
+    //查询tag: all, article, login, author
     String tag;
     List<ApUserSearch> hisList;
     String hotDate;
