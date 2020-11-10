@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @AutoConfigureMockMvc
 public class ArticleInfoControllerTest {
 
-    //使用mockmvc进行测试
+    //使用mockmvc
     @Autowired
     MockMvc mvc;
 
