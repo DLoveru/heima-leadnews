@@ -1,6 +1,7 @@
 package com.heima.behavior.service.impl;
 
 import com.heima.behavior.service.AppUnLikesBehaviorService;
+import com.heima.common.zookeeper.sequence.Sequences;
 import com.heima.model.behavior.dtos.UnLikesBehaviorDto;
 import com.heima.model.behavior.pojos.ApBehaviorEntry;
 import com.heima.model.behavior.pojos.ApUnlikesBehavior;
@@ -24,7 +25,8 @@ public class AppUnLikesBehaviorServiceImpl implements AppUnLikesBehaviorService 
 
     @Autowired
     private ApUnlikesBehaviorMapper apUnlikesBehaviorMapper;
-
+    @Autowired
+    private Sequences sequences;
     @Override
     public ResponseResult saveUnLikesBehavior(UnLikesBehaviorDto dto) {
         //获取用户信息，获取设备id
@@ -47,6 +49,7 @@ public class AppUnLikesBehaviorServiceImpl implements AppUnLikesBehaviorService 
         alb.setCreatedTime(new Date());
         alb.setArticleId(dto.getArticleId());
         alb.setType(dto.getType());
+        alb.setId(sequences.sequenceApLikes());
         int insert = apUnlikesBehaviorMapper.insert(alb);
 
         return ResponseResult.okResult(insert);
