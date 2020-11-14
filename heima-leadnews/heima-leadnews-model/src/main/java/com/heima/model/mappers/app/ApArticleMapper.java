@@ -14,4 +14,6 @@ public interface ApArticleMapper {
 
     ApArticle selectById(Long id);
 
+    void insert(ApArticle apArticle);
+
 }

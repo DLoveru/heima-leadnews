@@ -39,4 +39,6 @@ public interface WmNewsMapper {
     int countSelectBySelective(@Param("dto") WmNewsPageReqDto dto,@Param("uid") Long uid);
     WmNews selectNewsDetailByPrimaryKey(Integer id);
     int deleteByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(WmNews record);
 }

@@ -14,6 +14,4 @@ public class AdChannel {
     private Boolean status;
     private Byte ord;
     private Date createdTime;
-
-
 }

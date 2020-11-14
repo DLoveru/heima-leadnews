@@ -148,14 +148,14 @@ public class SimHashUtils {
     }
 
 
-    public static double getSemblance(String token1,String token2,int hashbits){
-        double i = (double) hammingDistance(token1,token2, hashbits);
-        return 1 - i/hashbits ;
+    public static double getSemblance(String token1,String token2){
+        double i = (double) hammingDistance(token1,token2, 64);
+        return 1 - i/64 ;
     }
 
     public static void main(String[] args) {
 
-        String s1 = "Vue入门案例";
+        String s1 = "....";
         String s2 = "最近公司由于业务拓展，需要进行小程序相关的开发，本着朝全栈开发者努力，决定学习下Vue，去年csdn送了一本《Vue.js权威指南》，那就从这本书开始练起来吧。哟吼。一，环境搭建\n" +
                 "今天主要说一下如何搭建环境，以及如何运行。1,npm安装\n" +
                 "brew install npm\n" +
@@ -171,16 +171,7 @@ public class SimHashUtils {
                 "原文：https://blog.csdn.net/hanhailong18/article/details/81509952 \n" +
                 "版权声明：本文为博主原创文章，转载请附上博文链接！";
 
-        double semblance = getSemblance(s1, s2, 64);
-        if(semblance>0.8){
-            System.out.println("完全匹配");
-        }else if(semblance>0.6){
-            System.out.println("人工再次审核");
-        }else{
-            System.out.println("不匹配");
-        }
-
-
-
+        double semblance = getSemblance(s1, s2);
+        System.out.println(semblance);
     }
 }
