@@ -22,6 +22,15 @@ public class ProcessingFlowManagerTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
 
+    @Test
+    public void testReserse(){
+        processingFlowManager.reverseHandel();
+        try {
+            Thread.sleep(Integer.MAX_VALUE);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

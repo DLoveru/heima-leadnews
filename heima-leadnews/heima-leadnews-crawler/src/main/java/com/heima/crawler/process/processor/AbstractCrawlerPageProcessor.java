@@ -9,7 +9,7 @@ import com.heima.model.crawler.core.parse.ParseRule;
 import com.heima.model.crawler.core.parse.impl.CrawlerParseItem;
 import com.heima.model.crawler.enums.CrawlerEnum;
 import lombok.extern.log4j.Log4j2;
-import org.bouncycastle.cert.ocsp.Req;
+//import org.bouncycastle.cert.ocsp.Req;
 import org.springframework.beans.factory.annotation.Autowired;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Request;
