@@ -7,6 +7,7 @@ import com.heima.model.mess.admin.ArticleAuditSuccess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -68,5 +69,13 @@ public class KafkaSender {
         ArticleAuditSuccessMessage temp = new ArticleAuditSuccessMessage();
         temp.setData(message);
         this.sendMesssage(kafkaTopicConfig.getArticleAuditSuccess(), UUID.randomUUID().toString(), temp);
+    }
+
+    /**
+     * 发送修改文章请求消息
+     * @param message
+     */
+    public void sendArticleUpdateBus(KafkaMessage message){
+        this.sendMesssage(kafkaTopicConfig.getArticleUpdateBus(),UUID.randomUUID().toString(),message);
     }
 }

@@ -13,5 +13,6 @@ public class KafkaTopicConfig {
 //    String adminTest;
     private String submitArticleAuth;
     private String articleAuditSuccess;
-
+    private String articleUpdateBus;
+    private String articleIncrHandle;
 }

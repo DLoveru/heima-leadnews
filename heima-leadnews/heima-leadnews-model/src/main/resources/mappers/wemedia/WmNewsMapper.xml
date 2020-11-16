@@ -55,18 +55,17 @@
       reason = #{reason},
       article_id = #{articleId},
       content = #{content},
-      images = #{images},
-	  enable = #{enable}
+      images = #{images}
     where id = #{id}
   </update>
 	<insert id="insertNewsForEdit" useGeneratedKeys="true" keyProperty="id">
       insert  into wm_news(
         user_id, title, type, channel_id, labels, created_time, submited_time, status,
-        publish_time,content,enable
+        publish_time,content
       )
       values (
         #{userId},#{title},#{type},#{channelId},#{labels},#{createdTime},
-        #{submitedTime},#{status},#{publishTime}, #{content},#{enable}
+        #{submitedTime},#{status},#{publishTime}, #{content}
       )
   </insert>
 
