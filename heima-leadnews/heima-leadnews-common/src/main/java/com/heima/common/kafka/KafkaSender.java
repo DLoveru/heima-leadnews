@@ -1,7 +1,9 @@
 package com.heima.common.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.heima.common.kafka.messages.ArticleAuditSuccessMessage;
 import com.heima.common.kafka.messages.SubmitArticleAuthMessage;
+import com.heima.model.mess.admin.ArticleAuditSuccess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +59,14 @@ public class KafkaSender {
      */
     public void sendSubmitArticleAuthMessage(SubmitArticleAuthMessage message){
         this.sendMesssage(kafkaTopicConfig.getSubmitArticleAuth(), UUID.randomUUID().toString(),message);
+    }
+
+    /**
+     * 发送审核成功消息
+     */
+    public void sendArticleAuditSuccessMessage(ArticleAuditSuccess message) {
+        ArticleAuditSuccessMessage temp = new ArticleAuditSuccessMessage();
+        temp.setData(message);
+        this.sendMesssage(kafkaTopicConfig.getArticleAuditSuccess(), UUID.randomUUID().toString(), temp);
     }
 }
