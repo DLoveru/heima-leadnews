@@ -195,7 +195,7 @@ public class NewsServiceImpl implements NewsService {
             }
 
             //存储关联
-            wmNewsMaterialMapper.saveRelationsByContent(materials, newsId, type);
+            wmNewsMaterialMapper.saveRelationsByContent(sequences.sequenceWmNewsMaterial(), materials, newsId, type);
         }
         return null;
     }
@@ -217,12 +217,12 @@ public class NewsServiceImpl implements NewsService {
         }
         wmNews.setStatus(type);
         WmUser user = WmThreadLocalUtils.getUser();
-        wmNews.setId(Math.toIntExact(sequences.sequenceApLikes()));
         wmNews.setUserId(user.getId());
         wmNews.setCreatedTime(new Date());
         wmNews.setSubmitedTime(new Date());
         wmNews.setEnable((short) 1);
         if (wmNews.getId() == null) {
+            wmNews.setId(Math.toIntExact(sequences.sequenceApLikes()));
             wmNewsMapper.insertNewsForEdit(wmNews);
         } else {
             wmNewsMapper.updateByPrimaryKey(wmNews);

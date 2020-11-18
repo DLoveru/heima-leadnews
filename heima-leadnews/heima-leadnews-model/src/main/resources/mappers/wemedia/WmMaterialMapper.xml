@@ -15,10 +15,10 @@
 </sql>
 
 	<insert id="insert" parameterType="com.heima.model.media.pojos.WmMaterial" useGeneratedKeys="true" keyProperty="id">
-	insert into wm_material (user_id, url,
+	insert into wm_material (id,user_id, url,
 	type, is_collection, created_time
 	)
-	values (#{userId}, #{url},
+	values (#{id},#{userId}, #{url},
 	#{type}, #{isCollection}, #{createdTime}
 	)
 	</insert>

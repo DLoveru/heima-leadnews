@@ -59,12 +59,12 @@
     where id = #{id}
   </update>
 	<insert id="insertNewsForEdit" useGeneratedKeys="true" keyProperty="id">
-      insert  into wm_news(
+      insert  into wm_news(id,
         user_id, title, type, channel_id, labels, created_time, submited_time, status,
         publish_time,content
       )
       values (
-        #{userId},#{title},#{type},#{channelId},#{labels},#{createdTime},
+        #{id},#{userId},#{title},#{type},#{channelId},#{labels},#{createdTime},
         #{submitedTime},#{status},#{publishTime}, #{content}
       )
   </insert>

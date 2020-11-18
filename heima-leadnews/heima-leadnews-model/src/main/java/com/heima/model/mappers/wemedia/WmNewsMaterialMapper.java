@@ -8,5 +8,5 @@ public interface WmNewsMaterialMapper {
 	int countByMid(Integer mid);
 
 	int delByNewsId(Integer nid);
-	void saveRelationsByContent(@Param("materials") Map<String, Object> materials,@Param("newsId") Integer newsId,@Param("type") Short type);
+	void saveRelationsByContent(@Param("id") Integer id,@Param("materials") Map<String, Object> materials,@Param("newsId") Integer newsId,@Param("type") Short type);
 }

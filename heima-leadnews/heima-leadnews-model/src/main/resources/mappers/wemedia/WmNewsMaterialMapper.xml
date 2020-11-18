@@ -10,11 +10,11 @@
 </select>
 
     <insert id="saveRelationsByContent">
-        insert into wm_news_material (material_id, news_id, type, ord)
+        insert into wm_news_material (id,material_id, news_id, type, ord)
         values
         <foreach item="mid" index="ord" collection="materials.entrySet()"
                  separator="," >
-            (#{mid}, #{newsId}, #{type}, #{ord})
+            (#{id},#{mid}, #{newsId}, #{type}, #{ord})
         </foreach>
     </insert>
 
