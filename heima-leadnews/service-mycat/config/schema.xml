@@ -5,6 +5,13 @@
 	<schema name="itheima-news" checkSQLschema="true" sqlMaxLimit="100">
 		<!-- 全局表 -->
 		<!-- 通用调度器quartz服务的调度表 -->
+		<!--mycat主键自增实现步骤
+		例如
+		<table name="ad_channel" dataNode="DNAD_0" autoIncrement="true" primaryKey="id"/>
+		<dataNode name="DNAD_0" dataHost="HOST0" database="admin_0" />
+		在admin_0数据库执行md中的sql语句，创建mycat_sequence表,Name属性填写AD_CHANNEL,
+		最后在sequence_db_conf.properties中 配置AD_CHANNEL=DNAD_0
+		-->
 		<table name="QUARTZ_QRTZ_BLOB_TRIGGERS" dataNode="DNSQ" type="global"/>
 		<table name="QUARTZ_QRTZ_CALENDARS" dataNode="DNSQ" type="global"/>
 		<table name="QUARTZ_QRTZ_CRON_TRIGGERS" dataNode="DNSQ" type="global"/>
@@ -249,7 +256,6 @@
 	<dataNode name="DNAD_1" dataHost="HOST0" database="admin_1" />
 	<dataNode name="DNAD_2" dataHost="HOST0" database="admin_2" />
 	<dataNode name="DNAD_3" dataHost="HOST0" database="admin_3" />
-
 	<dataHost name="HOST0" maxCon="600" minCon="200" balance="0"
 	                  writeType="0" dbType="mysql" dbDriver="native" switchType="1"  slaveThreshold="100">
 	        <heartbeat>select user()</heartbeat>

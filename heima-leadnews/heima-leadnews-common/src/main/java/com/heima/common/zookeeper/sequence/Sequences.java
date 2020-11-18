@@ -33,4 +33,8 @@ public class Sequences {
     public Integer sequenceWmNewsMaterial() {
         return this.client.sequenceById(ZkSequenceEnum.WM_NEWS_MATERIAL);
     }
+
+    public Integer sequenceAdChannel() {
+        return this.client.sequenceById(ZkSequenceEnum.AD_CHANNEL);
+    }
 }
