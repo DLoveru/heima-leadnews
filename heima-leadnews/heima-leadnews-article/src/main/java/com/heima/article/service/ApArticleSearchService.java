@@ -55,5 +55,10 @@ public interface ApArticleSearchService {
      */
     ResponseResult saveUserSearch(Integer entryId,String searchWords);
 
-
+    /**
+     * 搜索联想词 v2
+     * @param dto
+     * @return
+     */
+    ResponseResult searchAssocicationV2(UserSearchDto dto);
 }

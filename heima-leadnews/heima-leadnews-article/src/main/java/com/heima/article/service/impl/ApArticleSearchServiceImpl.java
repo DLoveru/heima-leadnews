@@ -1,6 +1,9 @@
 package com.heima.article.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
 import com.heima.article.service.ApArticleSearchService;
+import com.heima.article.utils.Trie;
 import com.heima.common.common.contants.ESIndexConstants;
 import com.heima.model.article.dtos.UserSearchDto;
 import com.heima.model.article.pojos.ApArticle;
@@ -23,6 +26,7 @@ import org.apache.commons.net.nntp.Article;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -184,5 +188,38 @@ public class ApArticleSearchServiceImpl implements ApArticleSearchService {
             e.printStackTrace();
         }
         return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
+    }
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
+    @Override
+    public ResponseResult searchAssocicationV2(UserSearchDto dto) {
+        if(dto==null || dto.getPageSize() > 50){
+            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
+        }
+        String assoStr = redisTemplate.opsForValue().get("associte_list");
+        List<ApAssociateWords> aw = null;
+        if(StringUtils.isNotEmpty(assoStr)){
+            aw = JSON.parseArray(assoStr, ApAssociateWords.class);
+        }else{
+            aw = apAssociateWordsMapper.selectAllAssociateWords();
+            redisTemplate.opsForValue().set("associte_list",JSON.toJSONString(aw));
+
+        }
+
+        //使用trie来进行管理数据
+        Trie t = new Trie();
+        for (ApAssociateWords a : aw) {
+            t.insert(a.getAssociateWords());
+        }
+        List<String> ret = t.startWith(dto.getSearchWords());
+        List<ApAssociateWords> list = new ArrayList<>();
+        for (String s : ret) {
+            ApAssociateWords apAssociateWords = new ApAssociateWords();
+            apAssociateWords.setAssociateWords(s);
+            list.add(apAssociateWords);
+        }
+        return ResponseResult.okResult(list);
     }
 }
