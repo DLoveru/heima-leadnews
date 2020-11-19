@@ -30,6 +30,38 @@
     publish_time,sync_status
   </sql>
 
+    <sql id="Base_Column_Where">
+        <where>
+            <if test="title!=null and title!=''">
+                and title = #{title}
+            </if>
+            <if test="authorId!=null and authorId!=''">
+                and author_id = #{authorId}
+            </if>
+            <if test="authorName!=null and authorName!=''">
+                and author_name = #{authorName}
+            </if>
+            <if test="channelId!=null and channelId!=''">
+                and channel_id = #{channelId}
+            </if>
+            <if test="channelName!=null and channelName!=''">
+                and channel_name = #{channelName}
+            </if>
+            <if test="layout!=null and layout!=''">
+                and layout = #{layout}
+            </if>
+            <if test="flag!=null and flag!=''">
+                and flag = #{flag}
+            </if>
+            <if test="views!=null and views!=''">
+                and views = #{views}
+            </if>
+            <if test="syncStatus!=null">
+                and sync_status = #{syncStatus}
+            </if>
+        </where>
+    </sql>
+
     <select id="loadArticleListByLocation" resultMap="resultMap">
         select <include refid="Base_Column_List"/>
         from ap_article  aa
@@ -94,6 +126,17 @@
     WHERE id=#{articleId}
 </update>
 
+    <!-- 以及文章IDS列表获取文章数据V2 -->
+    <select id="loadArticleListByIdListV2" resultMap="resultMap">
+        select * from ap_article where id in(
+        <trim prefix="" suffixOverrides=",">
+            <foreach item="item" collection="list" separator=",">
+                #{item}
+            </foreach>
+        </trim>
+        )
+    </select>
+
     <insert id="insert" parameterType="com.heima.model.article.pojos.ApArticle">
         <selectKey resultType="java.lang.Integer" order="AFTER" keyColumn="id" keyProperty="id">
             select last_insert_id()
@@ -140,6 +183,16 @@
         #{origin}
         )
     </insert>
+
+    <select id="selectList" resultMap="resultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ap_article
+        <include refid="Base_Column_Where"/>
+    </select>
+    <update id="updateSyncStatus">
+    UPDATE ap_article SET sync_status = #{syncStatus} WHERE id=#{id}
+</update>
 
 
 </mapper>

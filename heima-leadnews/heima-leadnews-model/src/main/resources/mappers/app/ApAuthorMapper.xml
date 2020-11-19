@@ -25,4 +25,12 @@
         created_time)
         values (#{name}, #{type}, #{userId},#{wmUserId}, #{createdTime})
     </insert>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        select * from ap_author
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

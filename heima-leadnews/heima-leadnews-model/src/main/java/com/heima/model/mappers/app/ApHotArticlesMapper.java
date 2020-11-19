@@ -38,7 +38,7 @@ public interface ApHotArticlesMapper {
      * @param dto
      * @return
      */
-    List<ApHotArticles> loadArticleIdListByEntryId(Integer entryId, ArticleHomeDto dto, short type);
+    List<ApHotArticles> loadArticleIdListByEntryId(@Param("entryId") Integer entryId, @Param("dto") ArticleHomeDto dto, @Param("type") short type);
 
 
     List<ApHotArticles> selectList(ApHotArticles apHotArticles);
@@ -59,7 +59,7 @@ public interface ApHotArticlesMapper {
      * @param articleId
      * @return
      */
-    int updateReadStatus(Integer entryId, Integer articleId);
+    int updateReadStatus(@Param("entryId") Integer entryId,@Param("articleId") Integer articleId);
 
-    List<ApHotArticles> loadHotListByLocation(@Param("dto") ArticleHomeDto dto, short type);
+    List<ApHotArticles> loadHotListByLocation(@Param("dto") ArticleHomeDto dto,@Param("type") short type);
 }

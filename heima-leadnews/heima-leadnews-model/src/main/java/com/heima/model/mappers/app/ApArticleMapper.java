@@ -29,4 +29,25 @@ public interface ApArticleMapper {
      */
     int updateArticleView(@Param("articleId") Integer articleId, @Param("viewCount") long viewCount,@Param("collectCount") long collectCount,@Param("commontCount") long commontCount,@Param("likeCount") long likeCount);
 
+    /**
+     * 依据文章IDS来获取文章详细内容
+     * @param list 文章ID
+     * @return
+     */
+    List<ApArticle> loadArticleListByIdListV2(List<Integer> list);
+
+    /**
+     * 查询
+     *
+     * @param apArticle
+     * @return
+     */
+    List<ApArticle> selectList(ApArticle apArticle);
+    /**
+     * 更新
+     * @param apArticle
+     */
+    void updateSyncStatus(ApArticle apArticle);
+
+
 }

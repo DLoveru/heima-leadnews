@@ -24,4 +24,16 @@
     <insert id="insert" parameterType="com.heima.model.article.pojos.ApArticleContent">
     insert into ap_article_content (article_id,content) values (#{articleId},#{content})
 </insert>
+
+    <select id="selectByArticleIds" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from ap_article_content
+        where article_id IN
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
 </mapper>

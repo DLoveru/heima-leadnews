@@ -23,4 +23,14 @@
     #{articleId},#{isComment},#{isForward},#{isDown},#{isDelete}
     );
 </insert>
+
+    <select id="selectByArticleIds" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ap_article_config
+        where article_id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
 </mapper>
