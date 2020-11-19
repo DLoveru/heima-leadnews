@@ -9,6 +9,7 @@ import com.heima.common.aliyun.AliyunImageScanRequest;
 import com.heima.common.aliyun.AliyunTextScanRequest;
 import com.heima.common.common.contants.ESIndexConstants;
 import com.heima.common.common.pojo.EsIndexEntity;
+import com.heima.common.kafka.KafkaSender;
 import com.heima.model.admin.pojos.AdChannel;
 import com.heima.model.article.pojos.ApArticle;
 import com.heima.model.article.pojos.ApArticleConfig;
@@ -20,6 +21,7 @@ import com.heima.model.mappers.wemedia.WmNewsMapper;
 import com.heima.model.mappers.wemedia.WmUserMapper;
 import com.heima.model.media.pojos.WmNews;
 import com.heima.model.media.pojos.WmUser;
+import com.heima.model.mess.admin.ArticleAuditSuccess;
 import com.heima.model.user.pojos.ApUserMessage;
 import com.heima.utils.common.Compute;
 import com.heima.utils.common.ZipUtils;
@@ -191,6 +193,10 @@ public class ReviewMediaArticleServiceImpl implements ReviewMediaArticleService 
     @Autowired
     private ApUserMessageMapper apUserMessageMapper;
 
+    @Autowired
+    private KafkaSender kafkaSender;
+
+
     /**
      * 保存数据
      * ap_article_config
@@ -295,6 +301,11 @@ public class ReviewMediaArticleServiceImpl implements ReviewMediaArticleService 
         //修改wmNews的状态 为  9
         wmNews.setArticleId(apArticle.getId());
         updateWmNews(wmNews,(short)9,"审核成功");
+        ArticleAuditSuccess articleAuditSuccess = new ArticleAuditSuccess();
+        articleAuditSuccess.setArticleId(apArticle.getId());
+        articleAuditSuccess.setType(ArticleAuditSuccess.ArticleType.WEMEDIA);
+        kafkaSender.sendArticleAuditSuccessMessage(articleAuditSuccess);
+
         //通知用户审核成功
         ApUserMessage apUserMessage = new ApUserMessage();
         apUserMessage.setUserId(wmNews.getUserId());
