@@ -1,8 +1,6 @@
 package com.heima.behavior.service.impl;
 
-import com.heima.behavior.kafka.BehaviorMessageSender;
 import com.heima.behavior.service.AppLikesBehaviorService;
-import com.heima.common.kafka.messages.behavior.UserLikesMessage;
 import com.heima.common.zookeeper.sequence.Sequences;
 import com.heima.model.behavior.dtos.LikesBehaviorDto;
 import com.heima.model.behavior.pojos.ApBehaviorEntry;
@@ -32,9 +30,6 @@ public class AppLikesBehaviorServiceImpl implements AppLikesBehaviorService {
     @Autowired
     private Sequences sequences;
 
-    @Autowired
-    private BehaviorMessageSender behaviorMessageSender;
-
     @Override
     public ResponseResult saveLikesBehavior(LikesBehaviorDto dto) {
 
@@ -62,13 +57,6 @@ public class AppLikesBehaviorServiceImpl implements AppLikesBehaviorService {
         alb.setBurst(BurstUtils.encrypt(alb.getId(),alb.getBehaviorEntryId()));
 
         int insert = apLikesBehaviorMapper.insert(alb);
-        if(insert==1){
-            if(alb.getOperation()==ApLikesBehavior.Operation.LIKE.getCode()){
-                behaviorMessageSender.sendMessagePlus(new UserLikesMessage(alb),userId,true);
-            }else if(alb.getOperation()==ApLikesBehavior.Operation.CANCEL.getCode()){
-                behaviorMessageSender.sendMessageReduce(new UserLikesMessage(alb),userId,true);
-            }
-        }
         return ResponseResult.okResult(insert);
     }
 }

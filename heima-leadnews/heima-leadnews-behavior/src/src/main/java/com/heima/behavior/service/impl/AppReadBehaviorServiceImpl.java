@@ -1,8 +1,6 @@
 package com.heima.behavior.service.impl;
 
-import com.heima.behavior.kafka.BehaviorMessageSender;
 import com.heima.behavior.service.AppReadBehaviorService;
-import com.heima.common.kafka.messages.behavior.UserReadMessage;
 import com.heima.common.zookeeper.sequence.Sequences;
 import com.heima.model.behavior.dtos.ReadBehaviorDto;
 import com.heima.model.behavior.pojos.ApBehaviorEntry;
@@ -31,9 +29,6 @@ public class AppReadBehaviorServiceImpl implements AppReadBehaviorService {
 
     @Autowired
     private Sequences sequences;
-
-    @Autowired
-    private BehaviorMessageSender behaviorMessageSender;
 
     @Override
     public ResponseResult saveReadBehavior(ReadBehaviorDto dto) {
@@ -72,9 +67,6 @@ public class AppReadBehaviorServiceImpl implements AppReadBehaviorService {
         int count = 0;
         if(isInsert){
             count= apReadBehaviorMapper.insert(apReadBehavior);
-            if(count==1){
-                behaviorMessageSender.sendMessagePlus(new UserReadMessage(apReadBehavior),userId,true);
-            }
         }else{
             count =apReadBehaviorMapper.update(apReadBehavior);
         }

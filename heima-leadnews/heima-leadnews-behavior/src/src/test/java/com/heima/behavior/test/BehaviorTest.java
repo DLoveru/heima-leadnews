@@ -1,10 +1,8 @@
 package com.heima.behavior.test;
 
 import com.heima.behavior.BehaviorJarApplication;
-import com.heima.behavior.service.AppLikesBehaviorService;
 import com.heima.behavior.service.AppShowBehaviorService;
 import com.heima.model.article.pojos.ApArticle;
-import com.heima.model.behavior.dtos.LikesBehaviorDto;
 import com.heima.model.behavior.dtos.ShowBehaviorDto;
 import com.heima.model.user.pojos.ApUser;
 import com.heima.utils.threadlocal.AppThreadLocalUtils;
@@ -37,20 +35,4 @@ public class BehaviorTest {
         dto.setArticleIds(list);
         appShowBehaviorService.saveShowBehavior(dto);
     }
-
-    @Autowired
-    private AppLikesBehaviorService appLikesBehaviorService;
-
-    @Test
-    public void testLikesSave(){
-        ApUser user = new ApUser();
-        user.setId(1l);
-        AppThreadLocalUtils.setUser(user);
-        LikesBehaviorDto dto = new LikesBehaviorDto();
-        dto.setEntryId(10120);
-        dto.setOperation((short)0);
-        dto.setType((short)0);
-        appLikesBehaviorService.saveLikesBehavior(dto);
-    }
-
 }
