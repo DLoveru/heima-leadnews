@@ -3,6 +3,7 @@ package com.heima.utils.common;
 import javax.swing.border.TitledBorder;
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.Locale;
 
 public class Compute {
 
@@ -105,6 +106,6 @@ public class Compute {
      * 结果转换成百分比形式
      * */
     public static String similarityResult(double resule) {
-        return NumberFormat.getPercentInstance(new Locale("en ", "US ")).format(resule);
+        return NumberFormat.getPercentInstance(new java.util.Locale("en ", "US ")).format(resule);
     }
 }
