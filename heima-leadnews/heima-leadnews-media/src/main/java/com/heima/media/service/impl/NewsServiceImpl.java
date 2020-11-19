@@ -195,7 +195,7 @@ public class NewsServiceImpl implements NewsService {
             }
 
             //存储关联
-            wmNewsMaterialMapper.saveRelationsByContent(sequences.sequenceWmNewsMaterial(), materials, newsId, type);
+            wmNewsMaterialMapper.saveRelationsByContent(materials, newsId, type);
         }
         return null;
     }

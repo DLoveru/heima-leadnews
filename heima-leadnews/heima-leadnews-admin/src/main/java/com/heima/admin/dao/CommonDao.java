@@ -22,7 +22,7 @@ public interface CommonDao {
 
     @Select("select * from ${tableName} where 1=1 ${where} ")//where ==> and name = 11  and password = ddd
     @ResultType(Integer.class)
-    int listCountForWhere(@Param("tableName") String tableName,@Param("where") String where);
+    Integer listCountForWhere(@Param("tableName") String tableName,@Param("where") String where);
 
     @Update("update ${tableName} set ${sets} where 1=1 ${where}")//sets==>  name=xxx,password=xsdfd
     @ResultType(Integer.class)

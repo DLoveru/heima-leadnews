@@ -9,6 +9,8 @@ public enum CommonTableEnum {
     // APP用户端
     AP_ARTICLE("*",true,false,false,false),
     AP_ARTICLE_CONFIG("*",true,false,true,false),
+    WM_NEWS("*",true,true,true,true),
+    CL_NEWS("*",true,true,true,true),
     AP_USER("*",true,false,true,false);
 
     String filed;

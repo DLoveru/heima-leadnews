@@ -56,7 +56,10 @@ public class CommonServiceImpl implements CommonService {
             total = commonDao.listCount(tableName);
         } else {
             list = commonDao.listForWhere(tableName, where, start, dto.getSize());
-            total = commonDao.listCountForWhere(tableName, where);
+            Integer result = commonDao.listCountForWhere(tableName, where);
+            if (result != null) {
+                total = result;
+            }
         }
         Map<String, Object> map = new HashMap<>();
         map.put("list", list);
@@ -113,7 +116,7 @@ public class CommonServiceImpl implements CommonService {
                             where.append(" and ").append(tempF).append("=\'").append(tempV).append("\'");
                         }
                         if ("like".equals(w.getType())) {
-                            where.append(" and ").append(tempF).append("like \'%").append(tempV).append("%\'");
+                            where.append(" and ").append(tempF).append(" like \'%").append(tempV).append("%\'");
                         }
                         if ("between".equals(w.getType())) {
                             String[] temp = tempV.split(",");
