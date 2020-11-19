@@ -3,11 +3,12 @@ package com.heima.common.kafka;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.heima.common.kafka.messages.ArticleAuditSuccessMessage;
 import com.heima.common.kafka.messages.SubmitArticleAuthMessage;
+import com.heima.common.kafka.messages.app.ApHotArticleMessage;
+import com.heima.model.article.pojos.ApHotArticles;
 import com.heima.model.mess.admin.ArticleAuditSuccess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -77,5 +78,13 @@ public class KafkaSender {
      */
     public void sendArticleUpdateBus(KafkaMessage message){
         this.sendMesssage(kafkaTopicConfig.getArticleUpdateBus(),UUID.randomUUID().toString(),message);
+    }
+
+    /**
+     * 处理热文章数据消息
+     */
+    public void sendHotArticleMessage(ApHotArticles message){
+        ApHotArticleMessage temp = new ApHotArticleMessage(message);
+        this.sendMesssage(kafkaTopicConfig.getHotArticle(),UUID.randomUUID().toString(),temp);
     }
 }
