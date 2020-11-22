@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/article")
+@RequestMapping("article/api/v1/article")
 public class ArticleHomeController implements ArticleHomeControllerApi {
 
     @Autowired

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/article/search")
+@RequestMapping("article/api/v1/article/search")
 public class ArticleSearchController implements ArticleSearchControllerApi {
 
     @Autowired

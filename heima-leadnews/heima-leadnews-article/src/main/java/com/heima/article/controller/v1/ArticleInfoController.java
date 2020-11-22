@@ -14,7 +14,7 @@ import javax.annotation.PostConstruct;
 import javax.persistence.PostPersist;
 
 @RestController
-@RequestMapping("/api/v1/article")
+@RequestMapping("article/api/v1/article")
 public class ArticleInfoController implements ArticleInfoControllerApi {
 
 

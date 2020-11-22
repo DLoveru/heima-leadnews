@@ -23,6 +23,18 @@
 		<table name="QUARTZ_QRTZ_SIMPLE_TRIGGERS" dataNode="DNSQ" type="global"/>
 		<table name="QUARTZ_QRTZ_SIMPROP_TRIGGERS" dataNode="DNSQ" type="global"/>
 		<table name="QUARTZ_QRTZ_TRIGGERS" dataNode="DNSQ" type="global"/>
+
+		<table name="ARTICLE_QRTZ_BLOB_TRIGGERS" dataNode="DNSQ" type="global"/>
+		<table name="ARTICLE_QRTZ_CALENDARS" dataNode="DNSQ" type="global"/>
+		<table name="ARTICLE_QRTZ_CRON_TRIGGERS" dataNode="DNSQ" type="global"/>
+		<table name="ARTICLE_QRTZ_FIRED_TRIGGERS" dataNode="DNSQ" type="global"/>
+		<table name="ARTICLE_QRTZ_JOB_DETAILS" dataNode="DNSQ" type="global"/>
+		<table name="ARTICLE_QRTZ_LOCKS" dataNode="DNSQ" type="global"/>
+		<table name="ARTICLE_QRTZ_PAUSED_TRIGGER_GRPS" dataNode="DNSQ" type="global"/>
+		<table name="ARTICLE_QRTZ_SCHEDULER_STATE" dataNode="DNSQ" type="global"/>
+		<table name="ARTICLE_QRTZ_SIMPLE_TRIGGERS" dataNode="DNSQ" type="global"/>
+		<table name="ARTICLE_QRTZ_SIMPROP_TRIGGERS" dataNode="DNSQ" type="global"/>
+		<table name="ARTICLE_QRTZ_TRIGGERS" dataNode="DNSQ" type="global"/>
 		<!-- 通用调度器quartz服务的调度表 -->
 		<table name="CRAWLER_QRTZ_BLOB_TRIGGERS" dataNode="DNSQ" type="global"/>
 		<table name="CRAWLER_QRTZ_CALENDARS" dataNode="DNSQ" type="global"/>

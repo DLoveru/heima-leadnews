@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v2/article")
+@RequestMapping("article/api/v2/article")
 public class ArticleHomeV2Controller implements ArticleHomeControllerApi {
 
     @Autowired
