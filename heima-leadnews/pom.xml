@@ -22,6 +22,7 @@
         <module>heima-leadnews-crawler</module>
         <module>heima-leadnews-images</module>
         <module>heima-leadnews-migration</module>
+        <module>heima-leadnews-eureka</module>
     </modules>
 
     <!-- 继承Spring boot工程 -->
@@ -31,6 +32,11 @@
         <version>2.1.5.RELEASE</version>
     </parent>
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <!--SpringCloud最新稳定版本-->
+        <spring-cloud.version>Finchley.SR1</spring-cloud.version>
         <!-- 项目源码及编译输出的编码 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -321,7 +327,15 @@
                 <artifactId>kafka-clients</artifactId>
                 <version>${kafka.client.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
+        <!--SpringCloud依赖版本管理-->
     </dependencyManagement>
 
     <build>
