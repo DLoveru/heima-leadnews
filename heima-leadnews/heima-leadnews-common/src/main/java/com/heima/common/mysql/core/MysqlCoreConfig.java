@@ -1,5 +1,7 @@
 package com.heima.common.mysql.core;
 
+import com.baomidou.mybatisplus.core.MybatisConfiguration;
+import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +24,7 @@ import java.io.IOException;
 @Configuration
 @ConfigurationProperties(prefix = "mysql.core")
 @PropertySource("classpath:mysql-core-jdbc.properties")
-@MapperScan(basePackages = "com.heima.model.mappers",sqlSessionFactoryRef = "mysqlCoreSessionFactory")
+@MapperScan(basePackages = "com.heima.model.mappers",sqlSessionFactoryRef = "mybatisSqlSessionFactoryBean")
 public class MysqlCoreConfig {
 
     String jdbcUrl;
@@ -75,6 +77,19 @@ public class MysqlCoreConfig {
         factoryBean.setMapperLocations(resources);
         //开启驼峰标识  user_name  --  》 userName
         org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+        configuration.setMapUnderscoreToCamelCase(true);
+        factoryBean.setConfiguration(configuration);
+        return factoryBean;
+    }
+    @Bean("mybatisSqlSessionFactoryBean")
+    public MybatisSqlSessionFactoryBean mybatisSqlSessionFactoryBean(@Qualifier("mysqlCoreDataSource") DataSource dataSource) throws IOException{
+        MybatisSqlSessionFactoryBean factoryBean = new MybatisSqlSessionFactoryBean();
+        factoryBean.setDataSource(dataSource);
+        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        Resource[] resources = resolver.getResources(this.getMapperFilePath());
+        factoryBean.setMapperLocations(resources);
+        //开启驼峰标识  user_name  --  》 userName
+        MybatisConfiguration configuration = new MybatisConfiguration();
         configuration.setMapUnderscoreToCamelCase(true);
         factoryBean.setConfiguration(configuration);
         return factoryBean;
