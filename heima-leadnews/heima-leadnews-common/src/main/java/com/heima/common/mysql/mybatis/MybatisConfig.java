@@ -1,4 +1,4 @@
-package com.heima.common.mysql.core;
+package com.heima.common.mysql.mybatis;
 
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -20,14 +19,18 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import javax.sql.DataSource;
 import java.io.IOException;
 
+/**
+ * @author Jalen.Deng
+ * @description mybatisPlus 配置
+ * @date 2020/11/30 17:07
+ **/
 @Getter
 @Setter
 @Configuration
 @ConfigurationProperties(prefix = "mysql.core")
 @PropertySource("classpath:mysql-core-jdbc.properties")
-@MapperScan(basePackages = "com.heima.model.mappers",sqlSessionFactoryRef = "mysqlCoreSessionFactory")
-public class MysqlCoreConfig {
-
+@MapperScan(basePackages = "com.heima.model.mappers",sqlSessionFactoryRef = "mybatisSqlSessionFactoryBean")
+public class MybatisConfig {
     String jdbcUrl;
     String jdbcUserName;
     String jdbcPassword;
@@ -57,27 +60,24 @@ public class MysqlCoreConfig {
      */
     public String getRealPassword(){
         String jdbcPassword = this.getJdbcPassword();//123456
-        //密码反转
         String reverse = StringUtils.reverse(jdbcPassword);//654321
         return  reverse;
     }
-
     /**
-     * 整合mybatis  SqlSessionFactoryBean
+     * 整合mybatis-plus
+     * @param dataSource mybatisSqlSessionFactoryBean
+     * @return
+     * @throws IOException
      */
-    @Bean("mysqlCoreSessionFactory")
-    public SqlSessionFactoryBean mysqlCoreSessionFactory(@Qualifier("mysqlCoreDataSource") DataSource dataSource) throws IOException {
-        SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
-        //数据源
+    @Bean("mybatisSqlSessionFactoryBean")
+    public MybatisSqlSessionFactoryBean mybatisSqlSessionFactoryBean(@Qualifier("mysqlCoreDataSource") DataSource dataSource) throws IOException{
+        MybatisSqlSessionFactoryBean factoryBean = new MybatisSqlSessionFactoryBean();
         factoryBean.setDataSource(dataSource);
-        //别名
-        factoryBean.setTypeAliasesPackage(this.getAliasesPackage());
-        //mapper文件存储的位置
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         Resource[] resources = resolver.getResources(this.getMapperFilePath());
         factoryBean.setMapperLocations(resources);
         //开启驼峰标识  user_name  --  》 userName
-        org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+        MybatisConfiguration configuration = new MybatisConfiguration();
         configuration.setMapUnderscoreToCamelCase(true);
         factoryBean.setConfiguration(configuration);
         return factoryBean;

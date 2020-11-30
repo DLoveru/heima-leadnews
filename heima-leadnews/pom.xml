@@ -23,6 +23,7 @@
         <module>heima-leadnews-images</module>
         <module>heima-leadnews-migration</module>
         <module>heima-leadnews-eureka</module>
+        <module>sdk-jar</module>
     </modules>
 
     <!-- 继承Spring boot工程 -->
@@ -258,7 +259,7 @@
                 <artifactId>aip-java-sdk</artifactId>
                 <version>${baidu.version}</version>
                 <scope>system</scope>
-                <systemPath>${project.basedir}/../sdk-jar/baidu/aip-java-sdk-4.11.1.jar</systemPath>
+                <systemPath>${project.basedir}/sdk-jar/com/baidu/aip-java-sdk-4.15.1.jar</systemPath>
             </dependency>
             <!-- fastdfs客服端 -->
             <dependency>
