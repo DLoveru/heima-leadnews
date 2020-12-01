@@ -14,6 +14,14 @@ public class Sequences {
         return this.client.sequence(ZkSequenceEnum.AP_LIKES);
     }
 
+    public Integer sequenceWmNews() {
+        return this.client.sequenceById(ZkSequenceEnum.WM_NEWS);
+    }
+
+    public Integer sequenceWmNewsArticle() {
+        return this.client.sequenceById(ZkSequenceEnum.WM_NEWS_ARTICLE);
+    }
+
     public Long sequenceApReadBehavior() {
         return this.client.sequence(ZkSequenceEnum.AP_READ_BEHAVIOR);
     }

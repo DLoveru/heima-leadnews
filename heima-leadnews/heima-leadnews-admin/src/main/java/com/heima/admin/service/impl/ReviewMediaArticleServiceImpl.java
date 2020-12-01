@@ -52,80 +52,85 @@ public class ReviewMediaArticleServiceImpl implements ReviewMediaArticleService 
 
     @Autowired
     private AliyunImageScanRequest aliyunImageScanRequest;
+    @Value(value = "${FILE_SERVER_URL}")
+    private String FILE_SERVER_URL;
 
     @Override
     public void autoReviewArticleByMedia(Integer newsId) {
         //根据文章id查询文章信息
         WmNews wmNews = wmNewsMapper.selectNewsDetailByPrimaryKey(newsId);
 
-        if(wmNews!=null){
+        if (wmNews != null) {
             //状态为4的时候，直接保存数据
-            if(wmNews.getStatus()==4){
+            if (wmNews.getStatus() == 4) {
                 reviewSuccessSaveAll(wmNews);
                 return;
             }
             //审核通过后待发布文章，判断发布时间
-            if(wmNews.getStatus()==8 && wmNews.getPublishTime()!=null && wmNews.getPublishTime().getTime()<new Date().getTime()){
+            if (wmNews.getStatus() == 8 && wmNews.getPublishTime() != null && wmNews.getPublishTime().getTime() < new Date().getTime()) {
                 reviewSuccessSaveAll(wmNews);
                 return;
             }
             //审核文章
-            if(wmNews.getStatus()==1){
+            if (wmNews.getStatus() == 1) {
                 //审核文章的标题与内容的匹配度
                 String content = wmNews.getContent();
                 String title = wmNews.getTitle();
                 double degree = Compute.SimilarDegree(content, title);
-                if(degree<=0){
+                if (degree <= 0) {
                     //文章标题与内容匹配
-                    updateWmNews(wmNews,(short)2,"文章标题与内容不匹配");
+                    updateWmNews(wmNews, (short) 2, "文章标题与内容不匹配");
                     return;
                 }
                 //审核文本内容 阿里接口
                 List<String> images = new ArrayList<>();
                 StringBuilder sb = new StringBuilder();
                 JSONArray jsonArray = JSON.parseArray(content);
-                handlerTextAndImages(images,sb,jsonArray);
-
+                handlerTextAndImages(images, sb, jsonArray);
+                if (images.isEmpty() && !wmNews.getImages().isEmpty()) {
+                    String[] imagesArr = wmNews.getImages().split(",");
+                    for (int i = 0; i < imagesArr.length; i++) {
+                        images.add(FILE_SERVER_URL + imagesArr[i]);
+                    }
+                }
                 try {
-                    /*String response = aliyunTextScanRequest.textScanRequest(sb.toString());
-                    if("review".equals(response)){//人工审核
-                        updateWmNews(wmNews,(short)3,"需要人工审核");
+                    String response = aliyunTextScanRequest.textScanRequest(sb.toString());
+                    if ("review".equals(response)) {//人工审核
+                        updateWmNews(wmNews, (short) 3, "需要人工审核");
                         return;
                     }
-                    if("block".equals(response)){//审核失败
-                        updateWmNews(wmNews,(short)2,"文本内容审核失败");
+                    if ("block".equals(response)) {//审核失败
+                        updateWmNews(wmNews, (short) 2, "文本内容审核失败");
                         return;
-                    }*/
+                    }
                     //审核文章中的图片信息，阿里接口
-                    /*String imagesResponse = aliyunImageScanRequest.imageScanRequest(images);
-                    if(imagesResponse!=null){
-                        if("review".equals(imagesResponse)){//人工审核
-                            updateWmNews(wmNews,(short)3,"需要人工审核");
+                    String imagesResponse = aliyunImageScanRequest.imageScanRequest(images);
+                    if (imagesResponse != null) {
+                        if ("review".equals(imagesResponse)) {//人工审核
+                            updateWmNews(wmNews, (short) 3, "需要人工审核");
                             return;
                         }
-                        if("block".equals(imagesResponse)){//审核失败
-                            updateWmNews(wmNews,(short)2,"图片内容审核失败");
+                        if ("block".equals(imagesResponse)) {//审核失败
+                            updateWmNews(wmNews, (short) 2, "图片内容审核失败");
                             return;
                         }
-                    }else{
-                        updateWmNews(wmNews,(short)2,"图片审核出现问题");
+                    } else {
+                        updateWmNews(wmNews, (short) 2, "图片审核出现问题");
                         return;
-                    }*/
-
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-
-                if(wmNews.getPublishTime()!=null){
-                    if(wmNews.getPublishTime().getTime()>new Date().getTime()){
+                if (wmNews.getPublishTime() != null) {
+                    if (wmNews.getPublishTime().getTime() > new Date().getTime()) {
                         //修改wmnews的状态为8
-                        updateWmNews(wmNews,(short)8,"待发布");
-                    }else{
+                        updateWmNews(wmNews, (short) 8, "待发布");
+                    } else {
                         //立即发布
                         reviewSuccessSaveAll(wmNews);
                     }
-                }else{
+                } else {
                     //立即发布
                     reviewSuccessSaveAll(wmNews);
                 }
@@ -136,6 +141,7 @@ public class ReviewMediaArticleServiceImpl implements ReviewMediaArticleService 
 
     /**
      * 找出文本内容和图片列表
+     *
      * @param images
      * @param sb
      * @param jsonArray
@@ -144,11 +150,11 @@ public class ReviewMediaArticleServiceImpl implements ReviewMediaArticleService 
         for (Object obj : jsonArray) {
             JSONObject jsonObj = (JSONObject) obj;
             String type = (String) jsonObj.get("type");
-            if("image".equals(type)){
+            if ("image".equals(type)) {
                 String value = (String) jsonObj.get("value");
-                images.add(value);
+                images.add(FILE_SERVER_URL + value);
             }
-            if("text".equals(type)){
+            if ("text".equals(type)) {
                 sb.append(jsonObj.get("value"));
             }
         }
@@ -156,6 +162,7 @@ public class ReviewMediaArticleServiceImpl implements ReviewMediaArticleService 
 
     /**
      * 修改wmnews
+     *
      * @param wmNews
      * @param i
      * @param 待发布
@@ -203,17 +210,18 @@ public class ReviewMediaArticleServiceImpl implements ReviewMediaArticleService 
      * ap_article
      * ap_article_content
      * ap_author
+     *
      * @param wmNews
      */
     private void reviewSuccessSaveAll(WmNews wmNews) {
 
         ApAuthor apAuthor = null;
-        if(wmNews.getUserId()!=null){
+        if (wmNews.getUserId() != null) {
             WmUser wmUser = wmUserMapper.selectById(wmNews.getUserId());
-            if(wmUser!=null && wmUser.getName()!=null){
+            if (wmUser != null && wmUser.getName() != null) {
                 //查询或ap_author
                 apAuthor = apAuthorMapper.selectByAuthorName(wmUser.getName());
-                if(apAuthor==null || apAuthor.getId()==null){
+                if (apAuthor == null || apAuthor.getId() == null) {
                     apAuthor = new ApAuthor();
                     apAuthor.setUserId(wmNews.getUserId());
                     apAuthor.setCreatedTime(new Date());
@@ -229,13 +237,13 @@ public class ReviewMediaArticleServiceImpl implements ReviewMediaArticleService 
 
 
         ApArticle apArticle = new ApArticle();
-        if(apAuthor!=null){
+        if (apAuthor != null) {
             apArticle.setAuthorId(apAuthor.getId().longValue());
             apArticle.setAuthorName(apAuthor.getName());
         }
         apArticle.setCreatedTime(new Date());
         Integer channelId = wmNews.getChannelId();
-        if(channelId!=null){
+        if (channelId != null) {
             AdChannel adChannel = adChannelMapper.selectByPrimaryKey(channelId);
             apArticle.setChannelId(channelId);
             apArticle.setChannelName(adChannel.getName());
@@ -243,11 +251,11 @@ public class ReviewMediaArticleServiceImpl implements ReviewMediaArticleService 
         apArticle.setLayout(wmNews.getType());
         apArticle.setTitle(wmNews.getTitle());
         String images = wmNews.getImages();//访问路径  serverurl+文件id
-        if(images!=null){
+        if (images != null) {
             String[] split = images.split(",");
             StringBuilder sb = new StringBuilder();
-            for(int i = 0;i<split.length;i++){
-                if(i>0){
+            for (int i = 0; i < split.length; i++) {
+                if (i > 0) {
                     sb.append(",");
                 }
                 sb.append(fileServerUrl);
@@ -278,7 +286,7 @@ public class ReviewMediaArticleServiceImpl implements ReviewMediaArticleService 
         esIndexEntity.setPublishTime(new Date());
         esIndexEntity.setStatus(new Long(1));
         esIndexEntity.setTitle(wmNews.getTitle());
-        if(wmNews.getUserId()!=null){
+        if (wmNews.getUserId() != null) {
             esIndexEntity.setUserId(wmNews.getUserId());
         }
         esIndexEntity.setTitle("media");
@@ -292,15 +300,15 @@ public class ReviewMediaArticleServiceImpl implements ReviewMediaArticleService 
             result = jestClient.execute(build);
         } catch (IOException e) {
             e.printStackTrace();
-            log.error("执行ES创建索引失败，message:{}",e.getMessage());
+            log.error("执行ES创建索引失败，message:{}", e.getMessage());
         }
-        if(result!=null && !result.isSucceeded()){
+        if (result != null && !result.isSucceeded()) {
             //打印日志信息
-            log.error("插入更新索引失败：message:{}",result.getErrorMessage());
+            log.error("插入更新索引失败：message:{}", result.getErrorMessage());
         }
         //修改wmNews的状态 为  9
         wmNews.setArticleId(apArticle.getId());
-        updateWmNews(wmNews,(short)9,"审核成功");
+        updateWmNews(wmNews, (short) 9, "审核成功");
         ArticleAuditSuccess articleAuditSuccess = new ArticleAuditSuccess();
         articleAuditSuccess.setArticleId(apArticle.getId());
         articleAuditSuccess.setType(ArticleAuditSuccess.ArticleType.WEMEDIA);

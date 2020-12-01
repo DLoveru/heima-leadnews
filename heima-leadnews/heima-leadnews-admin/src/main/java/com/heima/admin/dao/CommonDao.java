@@ -9,7 +9,7 @@ import java.util.List;
 public interface CommonDao {
 
     @Select("select * from ${tableName} limit #{start},#{size}")
-    @ResultType(HashMap.class)
+    @ResultType(java.util.List.class)
     List<HashMap> list(@Param("tableName") String tableName,@Param("start") int start,@Param("size") int size);
 
     @Select("select count(*) from ${tableName}")
@@ -17,10 +17,10 @@ public interface CommonDao {
     int listCount(@Param("tableName") String tableName);
 
     @Select("select * from ${tableName} where 1=1 ${where} limit #{start},#{size} ")//where ==> and name = 11  and password = ddd
-    @ResultType(HashMap.class)
+    @ResultType(java.util.List.class)
     List<HashMap> listForWhere(@Param("tableName") String tableName,@Param("where") String where,@Param("start") int start,@Param("size") int size);
 
-    @Select("select * from ${tableName} where 1=1 ${where} ")//where ==> and name = 11  and password = ddd
+    @Select("select count(*) from ${tableName} where 1=1 ${where} ")//where ==> and name = 11  and password = ddd
     @ResultType(Integer.class)
     Integer listCountForWhere(@Param("tableName") String tableName,@Param("where") String where);
 

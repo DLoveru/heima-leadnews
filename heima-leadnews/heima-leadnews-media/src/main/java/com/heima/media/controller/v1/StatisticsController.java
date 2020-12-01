@@ -3,6 +3,7 @@ package com.heima.media.controller.v1;
 import com.heima.media.service.StatisticsService;
 import com.heima.model.common.dtos.ResponseResult;
 import com.heima.model.media.dtos.StatisticDto;
+import com.heima.model.media.dtos.WmFansPortraitDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,5 +20,9 @@ public class StatisticsController {
     @PostMapping("/news")
     public ResponseResult newsData(@RequestBody StatisticDto dto){
         return statisticsService.findWmNewsStatistics(dto);
+    }
+    @PostMapping("/fans")
+    public ResponseResult fansData(@RequestBody WmFansPortraitDto wmFansPortraitDto){
+        return null;
     }
 }

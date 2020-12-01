@@ -1,8 +1,10 @@
 package com.heima.media.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.heima.common.kafka.messages.SubmitArticleAuthMessage;
 import com.heima.common.media.constans.WmMediaConstans;
 import com.heima.common.zookeeper.sequence.Sequences;
+import com.heima.media.kafka.AdminMessageSender;
 import com.heima.media.service.NewsService;
 import com.heima.model.common.dtos.PageResponseResult;
 import com.heima.model.common.dtos.ResponseResult;
@@ -15,14 +17,16 @@ import com.heima.model.media.dtos.WmNewsPageReqDto;
 import com.heima.model.media.pojos.WmMaterial;
 import com.heima.model.media.pojos.WmNews;
 import com.heima.model.media.pojos.WmUser;
+import com.heima.model.mess.admin.SubmitArticleAuto;
 import com.heima.utils.threadlocal.WmThreadLocalUtils;
+import com.thoughtworks.xstream.core.ReferenceByIdMarshaller;
 import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.search.aggregations.bucket.terms.DoubleTerms;
+import org.apache.hadoop.util.IdGenerator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.*;
@@ -48,8 +52,11 @@ public class NewsServiceImpl implements NewsService {
     private String fileServerUrl;
     @Autowired
     private Sequences sequences;
+    @Autowired
+    private AdminMessageSender adminMessageSender;
 
     @Override
+    @Transactional
     public ResponseResult saveNews(WmNewsDto dto, Short type) {
         //如果用户传递参数为空或文章内容为空返回PARAM_REQUIRE错误
         if (dto == null || StringUtils.isEmpty(dto.getContent())) {
@@ -88,7 +95,12 @@ public class NewsServiceImpl implements NewsService {
             //保存封面图片和当前文章的关系
             ResponseResult responseResult = coverIamgesRelation(dto, materials, wmNews, countImageNum);
             //流程处理完成返回处理结果
-
+            SubmitArticleAuthMessage message = new SubmitArticleAuthMessage();
+            SubmitArticleAuto submitArticleAuto = new SubmitArticleAuto();
+            submitArticleAuto.setArticleId(wmNews.getId());
+            submitArticleAuto.setType(SubmitArticleAuto.ArticleType.WEMEDIA);
+            message.setData(submitArticleAuto);
+            adminMessageSender.sendMessage(message);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -221,8 +233,9 @@ public class NewsServiceImpl implements NewsService {
         wmNews.setCreatedTime(new Date());
         wmNews.setSubmitedTime(new Date());
         wmNews.setEnable((short) 1);
+        wmNews.setArticleId(sequences.sequenceWmNews());
         if (wmNews.getId() == null) {
-            wmNews.setId(Math.toIntExact(sequences.sequenceApLikes()));
+            wmNews.setId(sequences.sequenceWmNews());
             wmNewsMapper.insertNewsForEdit(wmNews);
         } else {
             wmNewsMapper.updateByPrimaryKey(wmNews);
