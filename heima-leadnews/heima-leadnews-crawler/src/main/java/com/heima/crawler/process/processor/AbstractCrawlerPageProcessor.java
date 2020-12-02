@@ -9,7 +9,6 @@ import com.heima.model.crawler.core.parse.ParseRule;
 import com.heima.model.crawler.core.parse.impl.CrawlerParseItem;
 import com.heima.model.crawler.enums.CrawlerEnum;
 import lombok.extern.log4j.Log4j2;
-//import org.bouncycastle.cert.ocsp.Req;
 import org.springframework.beans.factory.annotation.Autowired;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Request;
@@ -20,7 +19,10 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
+/**
+ * 爬虫实现抽象类，该类完成通用处理方法，个性化实现交给子类
+ */
 @Log4j2
 public abstract class AbstractCrawlerPageProcessor extends AbstractProcessFlow implements PageProcessor {
 
@@ -52,6 +54,7 @@ public abstract class AbstractCrawlerPageProcessor extends AbstractProcessFlow i
 
     @Override
     public Site getSite() {
+        //1.抓取网站的相关配置，包括编码、抓取间隔、重试次数等
         Site site = Site.me().setRetryTimes(getRetryTimes()).setRetrySleepTime(getRetrySleepTime()).setSleepTime(getSleepTime()).setTimeOut(getTimeout());
         //header  配置
         Map<String, String> headerMap = getHeaderMap();

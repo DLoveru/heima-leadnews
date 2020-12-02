@@ -12,12 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.downloader.Downloader;
+import us.codecraft.webmagic.monitor.SpiderMonitor;
 import us.codecraft.webmagic.pipeline.Pipeline;
 import us.codecraft.webmagic.processor.PageProcessor;
 import us.codecraft.webmagic.scheduler.Scheduler;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.management.JMException;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -87,6 +89,12 @@ public class ProcessingFlowManager {
                     spider.addPipeline(pipeline);
                 }
             }
+        }
+        try {
+            //添加爬虫监控
+            SpiderMonitor.instance().register(spider);
+        } catch (JMException e) {
+            e.printStackTrace();
         }
         return spider;
     }

@@ -49,6 +49,7 @@ public class CrawlerPageProcessorManager {
      * @param page
      */
     public void handel(Page page){
+        // 部分二：定义如何抽取页面信息，并保存下来
         String handelType = crawlerHelper.getHandelType(page.getRequest());
         String documentType = crawlerHelper.getDocumentType(page.getRequest());
         for (AbstractCrawlerPageProcessor abstractCrawlerPageProcessor : abstractCrawlerPageProcessorList) {
