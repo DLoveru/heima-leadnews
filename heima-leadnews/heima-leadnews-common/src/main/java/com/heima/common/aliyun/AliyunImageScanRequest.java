@@ -41,14 +41,14 @@ public class AliyunImageScanRequest {
         IAcsClient client = new DefaultAcsClient(profile);
 
         ImageSyncScanRequest imageSyncScanRequest = new ImageSyncScanRequest();
+
         // 指定API返回格式。
         imageSyncScanRequest.setAcceptFormat(FormatType.JSON);
         // 指定请求方法。
         imageSyncScanRequest.setMethod(MethodType.POST);
         imageSyncScanRequest.setEncoding("utf-8");
         //支持HTTP和HTTPS。
-        imageSyncScanRequest.setProtocol(ProtocolType.HTTPS);
-
+        imageSyncScanRequest.setProtocol(ProtocolType.HTTP);
         JSONObject httpBody = new JSONObject();
         /**
          * 设置要检测的风险场景。计费依据此处传递的场景计算。
@@ -56,7 +56,7 @@ public class AliyunImageScanRequest {
          * 例如：检测2张图片，场景传递porn和terrorism，计费会按照2张图片鉴黄，2张图片暴恐检测计算。
          * porn：表示鉴黄场景。
          */
-        httpBody.put("scenes", Arrays.asList("porn"));
+        httpBody.put("scenes", Arrays.asList("logo","porn","ad","terrorism"));
 
         /**
          * 设置待检测图片。一张图片对应一个task。
@@ -117,7 +117,7 @@ public class AliyunImageScanRequest {
                     }
                 }
             } else {
-                //task.url is not security ,目前解决不了，只能暂且通过 审核
+                //到时候可能会报task.url is not security错误，原因是如果fastdfs使用的是私网ip，那么外网是无法访问的，需要进行相应的配置
                 result = "pass";
                 /**
                  * 表明请求整体处理失败，原因视具体的情况详细分析。

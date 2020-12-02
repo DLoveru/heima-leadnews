@@ -32,7 +32,7 @@ public class AliTest {
     public void testImageScanRequest(){
         try {
             List list = new ArrayList<>();
-            list.add("http://47.94.7.85/group1/M00/00/00/rBENvl02ZtKAEgFqAACNdiGk7IM981.jpg");
+            list.add("https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1267931373,3662510004&fm=26&gp=0.jpg");
             String response = aliyunImageScanRequest.imageScanRequest(list);
             System.out.println(response+"-------------------");
         } catch (Exception e) {
