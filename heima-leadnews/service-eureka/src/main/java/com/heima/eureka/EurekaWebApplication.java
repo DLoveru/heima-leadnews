@@ -7,12 +7,12 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 /**
  * @author Jalen.Deng
  * @description
- * @date 2020/11/23 13:28
+ * @date 2020/12/5 18:14
  **/
-@EnableEurekaServer
 @SpringBootApplication
+@EnableEurekaServer
 public class EurekaWebApplication {
     public static void main(String[] args) {
-        SpringApplication.run(EurekaWebApplication.class, args);
+        SpringApplication.run(EurekaWebApplication.class,args);
     }
 }
